@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    </head>
+    <body>
+    <script>
+          
+ //Width and height
+            var w = 500;
+            var h = 300;
+
+            //Define map projection
+            var projection = d3.geo.mercator()
+                                   .translate([w/2, h/2])
+                                   .scale([0.0001]);
+
+            //Define path generator
+            var path = d3.geo.path()
+                             .projection(projection);
+
+            //Create SVG element
+            var svg = d3.select("body").append("svg").attr({width:w, height: h});
+
+            //Load in GeoJSON data
+            d3.json("ua-all.geo.json", function(json) {
+                
+                //Bind data and create one path per GeoJSON feature
+                svg.selectAll("path")
+                   .data(json.features)
+                   .enter()
+                   .append("path")
+                   .attr("d", path)
+                   .attr("fill","#666666");
+        
+            });
+          
+    </script>
+    </body>
+</html>
